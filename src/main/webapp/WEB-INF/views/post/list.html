@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/posts/search}">
+    <input type="text" th:name="title" placeholder="Enter the title">
+    <button>Search</button>
+</form>
+
+<a href="/posts/create">Add new Post</a><br>
+<a href="/posts/order">Order By Likes</a><br>
+<a href="/posts/new-post">New Posts</a>
+<div th:each="post : ${posts}">
+    <span th:text="${post.title}"></span>
+    <span th:text="${post.createAt}"></span>
+    <span th:text="${post.content}"></span>
+    <span th:text="${post.likes}"></span>
+    <a th:href="@{/posts/edit/__${post.id}__}">Edit</a>
+    <a th:href="@{/posts/delete/__${post.id}__}">Delete</a>
+</div>
+</body>
+</html>
+</html>

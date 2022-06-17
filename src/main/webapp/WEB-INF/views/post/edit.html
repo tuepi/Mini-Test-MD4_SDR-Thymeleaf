@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Post</title>
+</head>
+<body>
+<h1>Edit Post</h1>
+<p>
+    <a href="/posts">Post list</a>
+</p>
+<form th:action="@{/posts/save}" th:object="${post}" method="post" novalidate="novalidate">
+    <input type="hidden" th:field="*{id}">
+    <input type="text" th:field="*{title}">
+    <input type="hidden" th:field="*{createAt}">
+    <input type="text" th:field="*{content}">
+    <input type="hidden" th:field="*{likes}">
+    <button>Edit</button>
+</form>
+</body>
+</html>

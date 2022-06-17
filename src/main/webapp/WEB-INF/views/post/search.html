@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>
+    <a href="/posts">Post list</a>
+</p>
+<div th:each="post : ${posts}">
+    <span th:text="${post.title}"></span>
+    <span th:text="${post.createAt}"></span>
+    <span th:text="${post.content}"></span>
+    <span th:text="${post.likes}"></span>
+</div>
+</body>
+</html>
