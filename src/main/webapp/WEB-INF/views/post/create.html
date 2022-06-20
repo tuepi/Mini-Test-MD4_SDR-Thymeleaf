@@ -1,20 +1,29 @@
+
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Create post</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head"></head>
 <body>
-<h1>Create post</h1>
+<h3>Add Post</h3>
 <p>
-    <a href="/posts">Post list</a>
+    <a th:href="@{/posts}">
+        Back to post list
+    </a>
 </p>
-<form th:action="@{/posts/save}" th:object="${post}" method="post" novalidate="novalidate">
-    <input type="text" th:field="*{title}" placeholder="Title">
-    <input type="hidden" th:field="*{createAt}">
-    <input type="text" th:field="*{content}" placeholder="Content">
-    <input type="hidden" th:field="*{likes}">
-    <button>Post</button>
-</form>
+<div id="form">
+    <form th:action="@{/posts/save}" th:object="${post}"
+          method="POST" novalidate="novalidate">
+        <input type="hidden" th:field="*{id}"/>
+        <div>
+            <label>Title</label>
+            <input type="text" th:field="*{title}"/>
+        </div>
+        <div>
+            <label>Content</label>
+            <input type="text" th:field="*{content}"/>
+        </div>
+        <input type="submit" value="Save"/>
+    </form>
+</div>
+<footer th:replace="/layout :: footer"></footer>
 </body>
 </html>

@@ -2,10 +2,11 @@ package controller;
 
 import model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import service.PostService;
 import service.impl.PostServiceImpl;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,18 @@ public class PostController {
     @Autowired
     PostServiceImpl postService;
 
+//- Dùng SDR, Thymeleaf
+//1. Làm giao diện cho chức năng vừa tìm theo title, vừa tìm theo khoảng thời gian. Nếu thiếu 1 trong 2 thì tìm theo cái kia
+//2. Tìm theo khoảng thời gian và sắp xếp từ cũ đến mới
+//3. Làm giao diện cho chắc năng vừa tìm theo title, vừa tìm theo khoảng thời gian và sắp xếp từ cũ đến mới
+//4. Phân trang 5 sản phẩm 1 trang
+//5. Phân trang 5 sản phẩm 1 trang, sắp xếp từ cũ đến mới
+//6. Tìm kiếm theo title và phân trang 5 sản phẩm 1 trang
+
+
     @GetMapping
-    public ModelAndView showList() {
-        return new ModelAndView("/post/list", "posts", postService.findAll());
+    public ModelAndView showList(@PageableDefault(value = 5) Pageable pageable) {
+        return new ModelAndView("/post/list", "posts", postService.findAll(pageable));
     }
 
     @GetMapping("/create")
@@ -55,18 +65,27 @@ public class PostController {
     }
 
     @GetMapping("/search")
-    public ModelAndView search(@RequestParam String title) {
-        return new ModelAndView("/post/search", "posts", postService.findByTitle(title));
+    public ModelAndView search(@RequestParam String title, @PageableDefault(value = 5) Pageable pageable) {
+        return new ModelAndView("/post/search", "posts", postService.findByTitle(title, pageable));
+    }
+
+    @GetMapping("/title-create-at")
+    public ModelAndView searchTitleAndCreateAt(@RequestParam String title, @RequestParam String begin ,@RequestParam String end, @PageableDefault(value = 5) Pageable pageable) {
+        return new ModelAndView("/post/search", "posts", postService.findByTitleAndCreateAt(title, begin,end, pageable));
     }
 
     @GetMapping("/order")
-    public ModelAndView orderByLikes() {
-        return new ModelAndView("/post/search", "posts", postService.orderByLikes());
+    public ModelAndView orderByLikes(@PageableDefault(value = 5) Pageable pageable) {
+        return new ModelAndView("/post/search", "posts", postService.orderByLikes(pageable));
     }
 
-    @GetMapping("/new-post")
+    @GetMapping("/top-4-new")
+    public ModelAndView top4OrderByCreateAt() {
+        return new ModelAndView("/post/search", "posts", postService.top4OrderByCreateAt());
+    }
+
+    @GetMapping("/create-at")
     public ModelAndView orderByCreateAt() {
         return new ModelAndView("/post/search", "posts", postService.orderByCreateAt());
     }
-
 }

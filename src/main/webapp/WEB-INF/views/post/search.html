@@ -1,18 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/layout :: head">
 </head>
 <body>
+<h3>Posts</h3>
 <p>
-    <a href="/posts">Post list</a>
+    <a th:href="@{/posts}">
+        Back to post list
+    </a>
 </p>
-<div th:each="post : ${posts}">
-    <span th:text="${post.title}"></span>
-    <span th:text="${post.createAt}"></span>
-    <span th:text="${post.content}"></span>
-    <span th:text="${post.likes}"></span>
+<table id = "customers">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>CreateAt</th>
+        <th>Content</th>
+        <th>Likes</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat : ${posts}">
+        <td th:text="${row.getTitle()}"></td>
+        <td th:text="${row.getCreateAt()}"></td>
+        <td th:text="${row.getContent()}"></td>
+        <td th:text="${row.getLikes()}"></td>
+        <td><a th:href="@{/products/{id}/edit(id=${row.getId()})}">edit</a></td>
+        <td><a th:href="@{/products/{id}/delete(id=${row.getId()})}">delete</a></td>
+        <td><a th:href="@{/products/{id}/view(id=${row.getId()})}">view</a></td>
+    </tr>
+    </tbody>
+</table>
+<hr>
+<div>
+    <a th:href="@{'/posts'(page=${posts.number - 1})}" th:if="${posts.hasPrevious()}">Previous</a>
+    <span th:text="${posts.number + 1}"></span>/<span th:text="${posts.totalPages}"></span>
+    <a th:href="@{'/posts'(page=${posts.number + 1})}" th:if="${posts.hasNext()}">Next</a>
 </div>
+<footer th:replace="/layout :: footer"></footer>
 </body>
 </html>
