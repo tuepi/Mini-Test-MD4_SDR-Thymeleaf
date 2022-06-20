@@ -53,7 +53,13 @@ public class PostServiceImpl implements PostService {
     }
 
     public Page<Post> findByTitleAndCreateAt(String title, String begin, String end, Pageable pageable) {
-        return postRepository.findAllByTitleContainingAndCreateAtBetween("%" + title + "%", begin, end, pageable);
+        if (title == null) {
+            return postRepository.findAllByCreateAtBetween(begin, end, pageable);
+        } else if (begin == null || end == null){
+            return postRepository.findAllByTitleContaining(title, pageable);
+        } else {
+            return postRepository.findAllByTitleContainingAndCreateAtBetween("%" + title + "%", begin, end, pageable);
+        }
     }
 
 }
